@@ -810,6 +810,7 @@ export function rendererMap(context) {
     };
 
 
+    /** @type {GetSet<unknown, Vec2>} */
     map.dimensions = function(val) {
         if (!arguments.length) return _dimensions;
 
@@ -1001,6 +1002,7 @@ export function rendererMap(context) {
     };
 
 
+    /** @type {GetSet<typeof map, geoExtent>} */
     map.trimmedExtent = function(val) {
         if (!arguments.length) {
             var headerY = 71;
