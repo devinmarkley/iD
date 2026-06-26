@@ -57,7 +57,8 @@ export function uiSectionDataLayers(context) {
         if (layer) {
             layer.enabled(enabled);
 
-            if (!enabled && (which === 'osm' || which === 'notes')) {
+            if (!enabled && (which === 'notes' ||
+                (which === 'osm' && !context.map().editingEnabled()))) {
                 context.enter(modeBrowse(context));
             }
         }

@@ -319,7 +319,7 @@ export function rendererMap(context) {
     }
 
 
-    function drawEditable(difference, extent) {
+    function drawEditable(difference, extent, editsOnly) {
         var mode = context.mode();
         var graph = context.graph();
         var features = context.features();
@@ -377,6 +377,12 @@ export function rendererMap(context) {
             // update selected vertices - the user might have just double-clicked a way,
             // creating a new vertex, triggering a partial redraw without a mode change
             surface.call(drawVertices.drawSelected, graph, map.extent());
+        }
+
+        if (editsOnly) {
+            surface.selectAll('.data-layer.osm')
+                .classed('disabled', false)
+                .style('opacity', 1);
         }
 
         surface
@@ -677,6 +683,8 @@ export function rendererMap(context) {
         if (map.editableDataEnabled() || map.isInWideSelection()) {
             context.loadTiles(projection);
             drawEditable(difference, extent);
+        } else if (map.editingEnabled()) {
+            drawEditable(difference, extent, true);
         } else {
             editOff();
         }
@@ -1054,6 +1062,11 @@ export function rendererMap(context) {
         var layer = context.layers().layer('osm');
         if (!layer || !layer.enabled()) return false;
 
+        return skipZoomCheck || map.withinEditableZoom();
+    };
+
+
+    map.editingEnabled = function(skipZoomCheck) {
         return skipZoomCheck || map.withinEditableZoom();
     };
 

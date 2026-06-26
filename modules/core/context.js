@@ -418,6 +418,12 @@ export function coreContext() {
     return _map.editableDataEnabled();
   };
 
+  context.editing = () => {
+    const mode = context.mode();
+    if (!mode || mode.id === 'save') return false;
+    return _map.editingEnabled();
+  };
+
 
   /* Debug */
   let _debugFlags = {
